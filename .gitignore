@@ -1,0 +1,51 @@
+test/*
+test_*
+*.swp
+*.swo
+*.pyc
+__pycache__/
+
+venv/
+
+# data output
+out/
+# data input
+data_in/
+vals_*
+
+# misc
+docs/
+# old and dirs
+old/
+away/
+away_*
+test/
+
+# hide
+creds.py
+_creds.py
+creds_*
+# logging
+logconf.ini
+log/
+
+# IDE stuff
+*.iml
+pythonProject/
+.idea/
+.github/
+# python setup
+uv.lock
+*.egg-info
+# copilot
+tools/
+
+# symlinks to libs
+flowpy
+yaml_config_support
+framecache_support
+yldpipe
+yldpipeNG
+ypipe
+
+yppe
