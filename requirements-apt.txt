@@ -1,0 +1,10 @@
+# for ubuntu 24 
+# for raspberry pi OS bookworm
+# 
+
+python3-pyaudio
+build-essentials
+python3-dev
+git
+vim
+

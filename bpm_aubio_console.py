@@ -14,6 +14,8 @@ import os
 from datetime import datetime
 from rich.text import Text
 from rich import box
+import argparse
+
 
 class BPMMonitorApp:
     def __init__(self, device_index=4, channels=1, buffer_size=512, window_mult=4, window_size=5):
@@ -185,6 +187,25 @@ class BPMMonitorApp:
                 inputStream.close()
                 self.pa.terminate()
 
+
 if __name__ == "__main__":
-    app = BPMMonitorApp()
+    parser = argparse.ArgumentParser(prog='bpm monitor', description='analyze bpm on audio input stream')
+    parser.add_argument('-d', '--device', help="audio device index")
+    parser.add_argument('-l', '--list-devices', action='store_true', help="list all audio devices")
+    args = parser.parse_args()
+    
+    print(args)
+    if args.list_devices:
+        from sys import exit
+        pa = pyaudio.PyAudio()
+        for i in range(pa.get_device_count()):
+            print(pa.get_device_info_by_index(i))
+            print()
+        exit()
+        
+    di = 2
+    if args.device:
+        di = int(args.device)
+    print("using di ", di)
+    app = BPMMonitorApp(device_index=di)
     app.run()
