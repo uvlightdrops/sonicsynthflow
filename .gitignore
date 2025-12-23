@@ -9,6 +9,7 @@ venv/
 
 # data output
 out/
+csv/
 # data input
 data_in/
 vals_*
