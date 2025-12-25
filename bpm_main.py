@@ -2,9 +2,13 @@ import argparse
 from bpm_analyzer import BPMAnalyzer
 from bpm_notifier import BPMChangeNotifier
 from sys import exit
+import os
 
-notify_url = 'http://192.168.2.194:8080/'
-notify_url = 'http://192.168.2.218:8080/'
+uname = os.uname()
+if uname.nodename == 's7pi':
+    notify_url = 'http://192.168.2.218:8080/'
+else:
+    notify_url = 'http://192.168.2.194:8080/'
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(prog='bpm monitor', description='analyze bpm on audio input stream')
