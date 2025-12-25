@@ -1,8 +1,9 @@
 import argparse
-from bpm_analyzer import BPMAnalyzer, BPMChangeNotifier
+from bpm_analyzer import BPMAnalyzer
+from bpm_notifier import BPMChangeNotifier
 from sys import exit
 
-notify_url = 'http://192.168.1.3:8080/notify_bpm_change/'
+notify_url = 'http://192.168.2.194:8080/'
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(prog='bpm monitor', description='analyze bpm on audio input stream')
