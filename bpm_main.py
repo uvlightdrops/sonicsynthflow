@@ -4,6 +4,7 @@ from bpm_notifier import BPMChangeNotifier
 from sys import exit
 
 notify_url = 'http://192.168.2.194:8080/'
+notify_url = 'http://192.168.2.218:8080/'
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(prog='bpm monitor', description='analyze bpm on audio input stream')
@@ -15,16 +16,18 @@ if __name__ == "__main__":
 
     print(args)
 
-    import pyaudio
+
     if args.list_devices:
+        import pyaudio
+        from pprint import pprint
         pa = pyaudio.PyAudio()
         count = pa.get_device_count()
         print("num devices: ", count)
         for i in range(count):
             info = pa.get_device_info_by_index(i)
             if info.get('maxInputChannels', 0) > 0:
-                print(info)
-                print()
+                print("INDEX=",i)
+                print(pprint(info))
         exit()
 
     #exit()

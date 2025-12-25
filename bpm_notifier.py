@@ -11,6 +11,7 @@ class BPMChangeNotifier:
         if self.last_sent_bpm is None or abs(self.last_sent_bpm - bpm) > 0.1:
             data = {'bpm': bpm, 'prev_bpm': prev_bpm}
             data.update(self.extra_data)
+            print('send POST, bpm=', bpm)
             try:
                 if self.http_method.upper() == 'POST':
                     requests.post(self.url, json=data, timeout=2)

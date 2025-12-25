@@ -3,3 +3,4 @@ aubio
 pyfiglet
 rich
 console
+requests

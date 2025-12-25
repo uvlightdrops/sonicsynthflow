@@ -53,7 +53,9 @@ class BPMAnalyzer:
                 self.last_bpm = bpm
                 self.bpm_values.append(bpm)
                 if self.callback and (prev_bpm is None or abs(prev_bpm - bpm) > 0.1):
-                    self.callback(bpm, prev_bpm)
+                    bpm_n = round(bpm, 2)
+                    prev_bpm_n = round(prev_bpm, 2)
+                    self.callback(bpm_n, prev_bpm_n)
         return (in_data, pyaudio.paContinue)
 
     def get_bpm(self):
