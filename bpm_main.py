@@ -7,12 +7,18 @@ import os
 import time
 
 uname = os.uname()
+port = 8080
+s7pi = '192.168.2.218'
+flowpad7 = '192.168.2.194'
+flowpad  = '192.168.2.80'
+
 if uname.nodename == 's7pi':
-    notify_url = 'http://192.168.2.218:8080/'
-    notify_url = 'http://192.168.2.80:8080/'
+    target_ip = flowpad7
 else:
-    #notify_url = 'http://192.168.2.194:8080/'
-    notify_url = 'http://192.168.2.80:8080/'
+    target_ip = flowpad7
+
+notify_url = 'http://'+target_ip+':'+str(port)+'/'
+
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(prog='bpm monitor', description='analyze bpm on audio input stream')
@@ -43,7 +49,7 @@ if __name__ == "__main__":
     if args.device:
         di = int(args.device)
     analyzer = BPMAnalyzer(device_index=di)
-    print(hasattr(analyzer, 'running'))
+
     notifier = None
     if args.notify:
         notifier = BPMChangeNotifier(url=notify_url)
@@ -57,7 +63,6 @@ if __name__ == "__main__":
         gui.run()
     else:
         try:
-            print(analyzer.running)
             while analyzer.running is True:
                 #print('X', end='')
                 time.sleep(0.1)
