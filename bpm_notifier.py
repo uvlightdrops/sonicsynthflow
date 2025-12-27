@@ -1,4 +1,5 @@
 import requests
+import traceback
 
 class BPMChangeNotifier:
     def __init__(self, url, http_method='GET', extra_data=None):
@@ -14,12 +15,13 @@ class BPMChangeNotifier:
             print(self.http_method, self.url, ' send  bpm=', bpm)
             try:
                 if self.http_method.upper() == 'POST':
-                    requests.post(self.url, json=data, timeout=2)
+                    response = requests.post(self.url, json=data, timeout=2)
                 else:
                     response = requests.get(self.url, params=data, timeout=2)
-                    print(response)
-            except e:
-                print(e)
+                    if response:
+                        print(self.http_method, ' send:   bpm=', bpm, response)
+            except Exception as e:
+                print('Exception in BPMChangeNotifier.notify:', e)
+                traceback.print_exc()
                 raise
             self.last_sent_bpm = bpm
-
