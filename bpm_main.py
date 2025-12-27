@@ -8,14 +8,22 @@ import time
 
 uname = os.uname()
 port = 8080
-s7pi = '192.168.2.218'
-flowpad7 = '192.168.2.194'
-flowpad  = '192.168.2.80'
+homewlan = False
+uvchakras= True
+
+if homewlan:
+    s7pi    = '192.168.2.218'
+    flowpad7= '192.168.2.194'
+    flowpad = '192.168.2.80'
+if uvchakras:
+    s7pi    = '192.168.43.3'
+    flowpad = '192.168.43.5'
+    esp32   = '192.168.43.10'
+
 
 if uname.nodename == 's7pi':
-    target_ip = flowpad7
-else:
-    target_ip = flowpad7
+    target_ip = flowpad
+
 
 notify_url = 'http://'+target_ip+':'+str(port)+'/'
 
@@ -65,6 +73,7 @@ if __name__ == "__main__":
         try:
             while analyzer.running is True:
                 #print('X', end='')
-                time.sleep(0.1)
+                time.sleep(0.01)
+                #pass
         except KeyboardInterrupt:
             analyzer.stop()
