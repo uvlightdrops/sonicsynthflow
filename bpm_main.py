@@ -8,29 +8,13 @@ import time
 
 uname = os.uname()
 port = 8080
-homewlan = False
-uvchakras= True
 
-if homewlan:
-    s7pi    = '192.168.2.218'
-    flowpad7= '192.168.2.194'
-    flowpad = '192.168.2.80'
-if uvchakras:
-    s7pi    = '192.168.43.3'
-    flowpad = '192.168.43.5'
-    esp32   = '192.168.43.10'
-
-
-if uname.nodename == 's7pi':
-    target_ip = flowpad
-
-
-notify_url = 'http://'+target_ip+':'+str(port)+'/'
 
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(prog='bpm monitor', description='analyze bpm on audio input stream')
     parser.add_argument('-d', '--device', help="audio device index")
+    parser.add_argument('-e', '--env', choices=['homewlan', 'uvchakras'], default='homewlan', help="Umgebung auswählen")
     parser.add_argument('-l', '--list-devices', action='store_true', help="list all audio devices")
     parser.add_argument('-n', '--notify', action='store_true', help="HTTP-URL für BPM-Änderungsbenachrichtigung")
     parser.add_argument('-t', '--tui', action='store_true', help="starte Console-TUI")
@@ -52,8 +36,27 @@ if __name__ == "__main__":
                 print(pprint(info))
         exit()
 
-    #exit()
-    di = 3
+    esp32 = '192.168.43.10'
+    if args.env == 'homewlan':
+        s7pi = '192.168.2.218'
+        flowpad7 = '192.168.2.194'
+        flowpad = '192.168.2.80'
+    elif args.env == 'uvchakras':
+        s7pi = '192.168.43.3'
+        flowpad = '192.168.43.5'
+    else:
+        print('Unbekannte Umgebung')
+        exit()
+
+    if uname.nodename == 's7pi':
+        target_ip = flowpad
+        device_id = 1
+    if uname.nodename == 'flowpad':
+        target_ip = esp32
+        device_id = 3
+
+    notify_url = 'http://' + target_ip + ':' + str(port) + '/'
+    di = device_id
     if args.device:
         di = int(args.device)
     analyzer = BPMAnalyzer(device_index=di)

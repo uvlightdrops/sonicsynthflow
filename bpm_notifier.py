@@ -23,5 +23,5 @@ class BPMChangeNotifier:
             except Exception as e:
                 print('Exception in BPMChangeNotifier.notify:', e)
                 traceback.print_exc()
-                raise
+                # raise entfernt, damit Fehler nicht weitergegeben werden
             self.last_sent_bpm = bpm
