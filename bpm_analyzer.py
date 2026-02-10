@@ -33,6 +33,9 @@ class BPMAnalyzer:
         self.status = "Initialisiert"
         self.num_consec_outliers = 0  # Zähler für aufeinanderfolgende Ausreißer
         self.counter = 0  # globaler Index für alle Messungen
+        self.beat_volume_check_interval = 100  # alle 100 Beats prüfen
+        self.last_volume_check_beat = 0
+        self.last_signal_for_volume = None  # speichert das letzte Signal für die Volumenprüfung
 
     def start(self, on_bpm_callback=None):
         self.callback = on_bpm_callback
@@ -105,6 +108,12 @@ class BPMAnalyzer:
             bpm = self.tempoDetection.get_bpm()
             print(round(bpm, 2))
             self.counter += 1
+            # Volumenprüfung alle 100 Beats
+            if self.counter - self.last_volume_check_beat >= self.beat_volume_check_interval:
+                min_level = float(np.min(signal))
+                max_level = float(np.max(signal))
+                logger.info(f"[Volumen-Check] Beat {self.counter}: min={min_level:.4f}, max={max_level:.4f}")
+                self.last_volume_check_beat = self.counter
             # Fallback: Wenn weniger als 3 valide Werte, akzeptiere alles als valide
             if len(self.bpm_values) < 3:
                 self.bpm_values.append(bpm)
